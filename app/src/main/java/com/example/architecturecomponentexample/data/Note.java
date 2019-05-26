@@ -3,6 +3,9 @@ package com.example.architecturecomponentexample.data;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * @author Shiraj Sayed
+ */
 @Entity(tableName = "note_table")
 public class Note {
 

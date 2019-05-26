@@ -1,4 +1,4 @@
-package com.example.architecturecomponentexample;
+package com.example.architecturecomponentexample.ui.notes;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.architecturecomponentexample.R;
 import com.example.architecturecomponentexample.data.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Shiraj Sayed
+ */
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
     private List<Note> notes;
@@ -59,5 +63,4 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             mPriority = itemView.findViewById(R.id.priority);
         }
     }
-
 }

@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+/**
+ * @author Shiraj Sayed
+ */
 public class NoteRepository {
     private NoteDao noteDao;
 

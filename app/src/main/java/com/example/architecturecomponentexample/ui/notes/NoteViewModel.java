@@ -1,4 +1,4 @@
-package com.example.architecturecomponentexample;
+package com.example.architecturecomponentexample.ui.notes;
 
 import android.app.Application;
 
@@ -11,6 +11,9 @@ import com.example.architecturecomponentexample.data.NoteRepository;
 
 import java.util.List;
 
+/**
+ * @author Shiraj Sayed
+ */
 public class NoteViewModel extends AndroidViewModel {
     private NoteRepository repository;
     private LiveData<List<Note>> allNotes;
