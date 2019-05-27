@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +28,7 @@ import butterknife.OnClick;
  * @author Shiraj Sayed
  */
 public class NotesListingActivity extends AppCompatActivity {
+    public static final int ADD_NOTE_REQUEST_CODE = 1;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -35,6 +38,8 @@ public class NotesListingActivity extends AppCompatActivity {
 
     @BindView(R.id.fab_button)
     FloatingActionButton mFabButton;
+
+    private NoteViewModel noteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,22 +53,39 @@ public class NotesListingActivity extends AppCompatActivity {
         final NoteAdapter adapter = new NoteAdapter();
         mRecyclerView.setAdapter(adapter);
 
-        NoteViewModel noteViewModel = ViewModelProviders.of(this)
+        noteViewModel = ViewModelProviders.of(this)
                 .get(NoteViewModel.class);
 
         noteViewModel.getAllNotes().observe(this,
-                new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(List<Note> notes) {
-                        adapter.setNotes(notes);
-                        mProgressBar.setVisibility(View.GONE);
-                    }
+                notes -> {
+                    adapter.setNotes(notes);
+                    mProgressBar.setVisibility(View.GONE);
                 });
     }
 
     @OnClick(R.id.fab_button)
     void onFabButtonClick() {
         Intent intent = new Intent(this, AddNoteActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ADD_NOTE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_NOTE_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null) {
+                String title = data.getStringExtra(AddNoteActivity.EXTRA_TITLE);
+                String description = data.getStringExtra(AddNoteActivity.EXTRA_DESCRIPTION);
+                int priority = data.getIntExtra(AddNoteActivity.EXTRA_PRIORITY, 1);
+
+                Note note = new Note(title, description, priority);
+                noteViewModel.insert(note);
+
+                Toast.makeText(this, "Note is Saved", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Note Not Saved", Toast.LENGTH_LONG).show();
+        }
     }
 }
